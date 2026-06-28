@@ -25,14 +25,8 @@ class RootView extends StatelessWidget {
   }
 }
 
-class CounterPage extends StatefulWidget {
+class CounterPage extends StatelessWidget {
   CounterPage({super.key});
-
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
   int counter = 0;
 
   @override
@@ -54,17 +48,13 @@ class _CounterPageState extends State<CounterPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(onPressed: (){
-            setState(() {
-              --counter;
-            });
+            --counter;
           },
           child: Icon(Icons.remove)
           ),
           SizedBox(width: 20),
           FloatingActionButton(onPressed: (){
-            setState(() {
-              ++counter;
-            });
+            ++counter;
           },
               child: Icon(Icons.add)),
         ],
