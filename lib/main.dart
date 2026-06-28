@@ -1,5 +1,7 @@
+import 'package:dwm_bloc_app/bloc/counter.bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main(){
   runApp(MyApp());
@@ -10,7 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RootView();
+    return MultiBlocProvider(providers: [
+      BlocProvider(create: (context) => CounterBloc()),
+    ], child: RootView());
   }
 }
 
@@ -27,8 +31,6 @@ class RootView extends StatelessWidget {
 
 class CounterPage extends StatelessWidget {
   CounterPage({super.key});
-  int counter = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +42,14 @@ class CounterPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Counter value => $counter", style: Theme.of(context).textTheme.headlineSmall,)
+            BlocBuilder<CounterBloc, CounterState>(
+                builder: ((context, state) {
+                  return Text(
+                    "Counter Value => ${state.counter}",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  );
+                })
+            )
           ],
         ),
       ),
@@ -48,18 +57,18 @@ class CounterPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(onPressed: (){
-            --counter;
+            context.read<CounterBloc>().add(DecrementCounterEvent());
           },
           child: Icon(Icons.remove)
           ),
           SizedBox(width: 20),
           FloatingActionButton(onPressed: (){
-            ++counter;
+            context.read<CounterBloc>().add(IncrementCounterEvent());
+
           },
               child: Icon(Icons.add)),
         ],
       ),
-
     );
   }
 }
